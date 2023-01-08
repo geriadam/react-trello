@@ -7,17 +7,58 @@ import { TrashIcon } from '../../assets/icons/trash'
 import { Progress } from '../progress/progress'
 import { EditTaskForm } from '../forms/EditTaskForm'
 import { DeleteTask } from '../forms/DeleteTask'
+import ItemsService from '../../services/items.service';
 
-export const Task = ({ item }) => {
+export const Task = ({ todoId, item, prev, next, onEdit, onDelete }) => {
   const [dropdownPopoverShow, setDropdownPopoverShow] = useState(false)
   const [showEditForm, setShowEditForm] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [error, setError] = useState("")
+  const newItem = { ...item, target_todo_id: todoId }
   function openDropdownPopover() {
     setDropdownPopoverShow(true)
   }
 
   function closeDropdownPopover() {
     setDropdownPopoverShow(false)
+  }
+
+  const onEditTask = async (data, targetTodoId = null) => {
+    const newData = { ...data, target_todo_id: targetTodoId ?? todoId }
+    try {
+      const response = await ItemsService.patchItem(todoId, newData.id, newData)
+      setShowEditForm(false)
+      closeDropdownPopover()
+      onEdit(response.data)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      setError(message)
+      console.log(message)
+    }
+  }
+
+  const onDeleteTask = async () => {
+    try {
+      const itemId = item.id
+      const response = await ItemsService.deleteItem(todoId, itemId)
+      setShowDeleteModal(false)
+      closeDropdownPopover()
+      onDelete(itemId)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      setError(message)
+      console.log(message)
+    }
   }
 
   return (
@@ -43,12 +84,20 @@ export const Task = ({ item }) => {
       </div>
       <div className={`${dropdownPopoverShow ? "block " : "hidden "} top-full left-3/4 z-10 absolute bg-white divide-y divide-gray-100 rounded-lg drop-shadow-lg w-80 dropdown-menu`}>
         <ul className="py-3.5 px-4 text-sm" aria-labelledby="dropdownMenuIconHorizontalButton">
-          <li className="flex flex-row justify-start items-center gap-5 mb-3 cursor-pointer dropdown-menu-primary">
-            <ArrowRightIcon /><span className="font-semibold text-sm leading-6 text-gray20">Move Right</span>
-          </li>
-          <li className="flex flex-row justify-start items-center gap-5 mb-3 cursor-pointer dropdown-menu-primary">
-            <ArrowLeftIcon /><span className="font-semibold text-sm leading-6 text-gray20">Move Left</span>
-          </li>
+          {
+            next !== null && (
+              <li onClick={() => onEditTask(item, next.id)} className="flex flex-row justify-start items-center gap-5 mb-3 cursor-pointer dropdown-menu-primary">
+                <ArrowRightIcon /><span className="font-semibold text-sm leading-6 text-gray20">Move Right</span>
+              </li>
+            )
+          }
+          {
+            prev !== null && (
+              <li onClick={() => onEditTask(item, prev.id)} className="flex flex-row justify-start items-center gap-5 mb-3 cursor-pointer dropdown-menu-primary">
+                <ArrowLeftIcon /><span className="font-semibold text-sm leading-6 text-gray20">Move Left</span>
+              </li>
+            )
+          }
           <li className="flex flex-row justify-start items-center gap-5 mb-3 cursor-pointer dropdown-menu-primary" onClick={() => setShowEditForm(true)}>
             <PencilIcon /><span className="font-semibold text-sm leading-6 text-gray20">Edit</span>
           </li>
@@ -57,8 +106,8 @@ export const Task = ({ item }) => {
           </li>
         </ul>
       </div>
-      <EditTaskForm visible={showEditForm} onCancel={() => setShowEditForm(false)} onSubmitForm={(data) => console.log(data)} data={item} />
-      <DeleteTask visible={showDeleteModal} onCancel={() => setShowDeleteModal(false)} onDelete={(id) => console.log(id)} data={item} />
+      <EditTaskForm visible={showEditForm} onCancel={() => setShowEditForm(false)} onSubmitForm={(data) => onEditTask(data)} data={newItem} />
+      <DeleteTask visible={showDeleteModal} onCancel={() => setShowDeleteModal(false)} onDelete={() => onDeleteTask()} />
     </div>
   );
 };
