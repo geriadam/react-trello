@@ -18,3 +18,94 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
+.btn {
+  @apply font-bold py-2 px-2 my-2 rounded-lg shadow;
+}
+
+.btn-primary {
+  @apply bg-green text-white;
+}
+.btn-primary:hover {
+  @apply bg-green text-white;
+}
+
+.btn-sm {
+  @apply px-2;
+}
+
+.btn-md {
+  @apply px-4;
+}
+
+.btn-lg {
+  @apply px-8;
+}
+
+.btn-xl {
+  @apply px-16;
+}
+
+/*button colors: default, primary, info, success, warning, danger, dark */
+.btn-default {
+  @apply border bg-white text-black-pearl border-gray88;
+}
+.btn-default:hover {
+  @apply border bg-white text-black-pearl border-gray88;
+}
+
+.btn-danger {
+  @apply bg-red text-white;
+}
+.btn-danger:hover {
+  @apply bg-red text-white;
+}
+
+.btn-disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+.btn-disabled:hover {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.label {
+  @apply flex justify-center items-center not-italic font-normal text-xs leading-5 py-0.5 px-2 rounded text-green border border-green-light bg-green-lighter;
+}
+
+.label-default {
+  @apply text-green border border-green-light bg-green-lighter
+}
+
+.label-warning {
+  @apply text-yellow-dark border border-yellow bg-yellow-lighter;
+}
+
+.label-danger {
+  @apply text-red border border-red-light bg-red-lighter;
+}
+
+.label-primary {
+  @apply text-green-dark border border-green-twilight bg-green-lightest;
+}
+
+.dropdown-menu svg {
+  fill: #333333
+}
+
+.dropdown-menu-primary:hover svg {
+  fill: #01959F;
+  stroke: #01959F;
+}
+
+.dropdown-menu-primary:hover span {
+  color: #01959F;
+}
+
+.dropdown-menu-danger:hover svg {
+  fill: #E11428;
+  stroke: #E11428;
+}
+
+.dropdown-menu-danger:hover span {
+  color: #E11428;
+}
