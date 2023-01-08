@@ -69,7 +69,7 @@ export const Group = ({ provided, todo, prev, next, indicator, setIndicator }) =
 
   return (
     <>
-      <div className="flex flex-col items-start p-4 bg-green-lighter rounded border border-green row-span-4">
+      <div className="flex flex-col items-start p-4 bg-green-lighter rounded border border-green row-span-4 group">
         <Label title={title} variant="default" />
         <p className="m-0 mt-2.5 mb-2 font-bold text-xs leading-5 text-gray25">{description}</p>
         <div

@@ -66,7 +66,7 @@ export const Task = ({ todoId, item, prev, next, onEdit, onDelete }) => {
     <Draggable key={item.id} draggableId={item.id.toString()} index={item.id} item={item}>
       {(provided) => (
         <div
-          className="w-full relative flex flex-col items-start p-4 bg-gray98 rounded border border-gray88 mb-3"
+          className="w-full relative flex flex-col items-start p-4 bg-gray98 rounded border border-gray88 mb-3 task"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -80,7 +80,7 @@ export const Task = ({ todoId, item, prev, next, onEdit, onDelete }) => {
             </div>
             <button
               type="button"
-              className="hover:bg-gray93 rounded cursor-pointer"
+              className="hover:bg-gray93 rounded cursor-pointer button-popover"
               onClick={() => {
                 dropdownPopoverShow
                   ? closeDropdownPopover()
@@ -94,22 +94,22 @@ export const Task = ({ todoId, item, prev, next, onEdit, onDelete }) => {
             <ul className="py-3.5 px-4 text-sm" aria-labelledby="dropdownMenuIconHorizontalButton">
               {
                 next !== null && (
-                  <li onClick={() => onEditTask(item, next.id)} className="flex flex-row justify-start items-center gap-5 mb-3 cursor-pointer dropdown-menu-primary">
+                  <li onClick={() => onEditTask(item, next.id)} className="flex flex-row justify-start items-center gap-5 mb-3 cursor-pointer dropdown-menu-primary move-right">
                     <ArrowRightIcon /><span className="font-semibold text-sm leading-6 text-gray20">Move Right</span>
                   </li>
                 )
               }
               {
                 prev !== null && (
-                  <li onClick={() => onEditTask(item, prev.id)} className="flex flex-row justify-start items-center gap-5 mb-3 cursor-pointer dropdown-menu-primary">
+                  <li onClick={() => onEditTask(item, prev.id)} className="flex flex-row justify-start items-center gap-5 mb-3 cursor-pointer dropdown-menu-primary move-left">
                     <ArrowLeftIcon /><span className="font-semibold text-sm leading-6 text-gray20">Move Left</span>
                   </li>
                 )
               }
-              <li className="flex flex-row justify-start items-center gap-5 mb-3 cursor-pointer dropdown-menu-primary" onClick={() => setShowEditForm(true)}>
+              <li className="flex flex-row justify-start items-center gap-5 mb-3 cursor-pointer dropdown-menu-primary edit" onClick={() => setShowEditForm(true)}>
                 <PencilIcon /><span className="font-semibold text-sm leading-6 text-gray20">Edit</span>
               </li>
-              <li className="flex flex-row justify-start items-center gap-5 mb-3 cursor-pointer dropdown-menu-danger" onClick={() => setShowDeleteModal(true)}>
+              <li className="flex flex-row justify-start items-center gap-5 mb-3 cursor-pointer dropdown-menu-danger delete" onClick={() => setShowDeleteModal(true)}>
                 <TrashIcon /><span className="font-semibold text-sm leading-6 text-gray20">Delete</span>
               </li>
             </ul>

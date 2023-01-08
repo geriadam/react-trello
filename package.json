@@ -44,6 +44,7 @@
     ]
   },
   "devDependencies": {
+    "cypress": "^12.3.0",
     "postcss-import": "^15.1.0",
     "postcss-nesting": "^10.2.0"
   }
