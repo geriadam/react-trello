@@ -6,7 +6,7 @@ import { EmptyTask } from '../task/empty'
 import { CreateTaskForm } from '../forms/CreateTaskForm'
 import ItemsService from '../../services/items.service'
 
-export const Group = ({ todo, prev, next, indicator, setIndicator }) => {
+export const Group = ({ provided, todo, prev, next, indicator, setIndicator }) => {
   const { id, title, description } = todo
   const [tasks, setTasks] = useState([])
   const [error, setError] = useState("");
@@ -63,7 +63,7 @@ export const Group = ({ todo, prev, next, indicator, setIndicator }) => {
   }
 
   const onDeleteTask = (id) => {
-    const copyTasks = tasks.filter(task => task.id != id);
+    const copyTasks = tasks.filter(task => task.id !== id);
     sortTasks(copyTasks)
   }
 
@@ -72,21 +72,27 @@ export const Group = ({ todo, prev, next, indicator, setIndicator }) => {
       <div className="flex flex-col items-start p-4 bg-green-lighter rounded border border-green row-span-4">
         <Label title={title} variant="default" />
         <p className="m-0 mt-2.5 mb-2 font-bold text-xs leading-5 text-gray25">{description}</p>
-        {
-          tasks &&
-          tasks.length > 0 &&
-          tasks.map((item, id) => (
-            <Task
-              key={id}
-              todoId={todo.id}
-              item={item}
-              onEdit={onEditTask}
-              onDelete={onDeleteTask}
-              prev={prev}
-              next={next}
-            />
-          ))
-        }
+        <div
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+        >
+          {
+            tasks &&
+            tasks.length > 0 &&
+            tasks.map((item, id) => (
+              <Task
+                key={id}
+                todoId={todo.id}
+                item={item}
+                onEdit={onEditTask}
+                onDelete={onDeleteTask}
+                prev={prev}
+                next={next}
+              />
+            ))
+          }
+          {provided.placeholder}
+        </div>
         {
           tasks.length === 0 && <EmptyTask />
         }
